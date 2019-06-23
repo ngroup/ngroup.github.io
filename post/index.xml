@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Chun&#39;s Blog</title>
-    <link>http://example.org/post/</link>
+    <link>https://blog.chunnien.com/post/</link>
     <description>Recent content in Posts on Chun&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 23 Jun 2019 21:41:41 +0800</lastBuildDate>
     
-	<atom:link href="http://example.org/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.chunnien.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Polarization of Light</title>
-      <link>http://example.org/post/polarization-of-light/</link>
+      <link>https://blog.chunnien.com/post/polarization-of-light/</link>
       <pubDate>Sun, 23 Jun 2019 21:41:41 +0800</pubDate>
       
-      <guid>http://example.org/post/polarization-of-light/</guid>
+      <guid>https://blog.chunnien.com/post/polarization-of-light/</guid>
       <description>Polarization is a phenomenon corresponding to the particular direction of oscillation of the electric field. It&#39;s all about phase...</description>
     </item>
     

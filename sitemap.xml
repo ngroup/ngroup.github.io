@@ -1,37 +1,37 @@
-<?xml-stylesheet type="text/xsl" href="http://example.org/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://blog.chunnien.com/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://blog.chunnien.com/</loc>
     <lastmod>2019-06-23T21:41:41+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/post/polarization-of-light/</loc>
+    <loc>https://blog.chunnien.com/post/polarization-of-light/</loc>
     <lastmod>2019-06-23T21:41:41+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/post/</loc>
-    <lastmod>2019-06-23T21:41:41+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://blog.chunnien.com/post/</loc>
     <lastmod>2019-06-23T21:41:41+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/tags/electromagnetics/</loc>
+    <loc>https://blog.chunnien.com/tags/</loc>
     <lastmod>2019-06-23T21:41:41+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://blog.chunnien.com/tags/electromagnetics/</loc>
+    <lastmod>2019-06-23T21:41:41+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/categories/</loc>
     <priority>0</priority>
   </url>
   
