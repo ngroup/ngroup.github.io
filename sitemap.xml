@@ -3,25 +3,48 @@
   
   <url>
     <loc>https://blog.chunnien.com/</loc>
-    <lastmod>2019-06-23T21:41:41+08:00</lastmod>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/post/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/post/quadtree-image-compression/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/tags/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/tags/algorithm/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/tags/image-processing/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.chunnien.com/tags/python/</loc>
+    <lastmod>2019-07-14T16:25:06+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://blog.chunnien.com/post/polarization-of-light/</loc>
     <lastmod>2019-06-23T21:41:41+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.chunnien.com/post/</loc>
-    <lastmod>2019-06-23T21:41:41+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.chunnien.com/tags/</loc>
-    <lastmod>2019-06-23T21:41:41+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

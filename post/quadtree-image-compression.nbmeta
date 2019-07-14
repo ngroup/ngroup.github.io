@@ -1,0 +1,6 @@
+title: Simple Image Compression Using Quadtree 
+date: Sun Jul 14 16:25:06 CST 2019
+author: Chun Nien
+tags: ["algorithm", "python", "image processing"]
+draft: false
+summary: From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere. How to represent the spatial data efficiently is being extensively studied. Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data...

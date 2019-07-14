@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en-us" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Simple Image Compression Using Quadtree - Chun&#39;s Blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Chun Nien" />
+  <meta name="description" content="From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere. How to represent the spatial data efficiently is being extensively studied. Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data..." />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6" />
+
+
+<link rel="canonical" href="https://blog.chunnien.com/post/quadtree-image-compression/" />
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.366e933ed284c172cd489877d72da8679c7baf2dd9f81468d739bcc350b7bf08.css" integrity="sha256-Nm6TPtKEwXLNSJh31y2oZ5x7ry3Z&#43;BRo1zm8w1C3vwg=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Simple Image Compression Using Quadtree" />
+<meta property="og:description" content="From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere. How to represent the spatial data efficiently is being extensively studied. Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.chunnien.com/post/quadtree-image-compression/" />
+<meta property="article:published_time" content="2019-07-14T16:25:06&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-14T16:25:06&#43;08:00"/>
+
+<meta itemprop="name" content="Simple Image Compression Using Quadtree">
+<meta itemprop="description" content="From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere. How to represent the spatial data efficiently is being extensively studied. Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data...">
+
+
+<meta itemprop="datePublished" content="2019-07-14T16:25:06&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-14T16:25:06&#43;08:00" />
+<meta itemprop="wordCount" content="1233">
+
+
+
+<meta itemprop="keywords" content="algorithm,python,image processing," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Simple Image Compression Using Quadtree"/>
+<meta name="twitter:description" content="From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere. How to represent the spatial data efficiently is being extensively studied. Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data..."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+<link href="https://fonts.googleapis.com/css?family=Lato|Spectral&display=swap" rel="stylesheet">
+
+
+
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/monokai-sublime.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44162124-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+        gtag('config', 'UA-44162124-3');
+</script>
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Chun&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://blog.chunnien.com/">Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://blog.chunnien.com/post/">Archives</a>
+          
+        
+      </li>
+    
+  </ul>
+</nav>
+
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+      <span class="logo-line-before"><i></i></span>
+    
+      Chun&#39;s Blog
+    
+      <span class="logo-line-after"><i></i></span>
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://blog.chunnien.com/">Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://blog.chunnien.com/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header post-header-center">
+      <h1 class="post-title">Simple Image Compression Using Quadtree</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-07-14" class="post-time">
+          July 14, 2019
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>From the path planning for robotic vacuum cleaner to the mesh generation in VLSI simulation, spatial data and their applications are everywhere.
+How to represent the spatial data efficiently is being extensively studied.
+Among the popular techniques, quadtree is one of the widely used data structure for representation of multi-dimensional spatial data.</p>
+
+<p>A classic quatree is formed by representing a square region being considered as the root of a tree.
+Next, the given region is divided into four equal-sized non-overlapping subregions by bisecting the region along each dimension.
+The four subregions produces four nodes associated to their parent node.
+The procedure of subdivision is performed recursively until a predefined minimum size of region or the criterion of the spatial homogeneity is reached. The figure below depicts the process.</p>
+
+<p><img src="quadtree_concept.png" alt="quadtree_concept.png" /></p>
+
+<p>Due to the advantages of conceptual clarity and ease of implementation,
+hundreds of variations and applications related to quadtree have been proposed since the introduction of the idea by Finkel and Bentley in 1974.</p>
+
+<p>In the following section, we are going to use Python to implement a quadtree and use it in lossy image compression as an simple example. We will use the colorful 512 x 512 &quot;Mandrill&quot; image as a example. The image can be obtained from <a href="http://sipi.usc.edu/database/database.php?volume=misc" title="source">USC-SIPI Image Database</a>.</p>
+
+<p>Let us dive into the code.</p>
+
+<p>First, we import all the dependencies.</p>
+
+<pre><code class="language-python">import numpy as np
+from imageio import imread
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib.collections import PatchCollection
+</code></pre>
+
+<p>We use the <code>imageio.imread()</code> to load the image as a numpy array. The 2-D image is represented by a 3-D array. The first dimension is height, the second dimension is width, and the third dimension is a 3-components vector contains the RGB values of the corresponding pixel.</p>
+
+<pre><code class="language-python">data = imread(&quot;mandrill.tiff&quot;)
+</code></pre>
+
+<p>Have a look at it:</p>
+
+<pre><code class="language-python">fig = plt.figure()
+plt.imshow(data)
+plt.show()
+</code></pre>
+
+<p><img src="output_6_0.png" alt="png" /></p>
+
+<p>Next, we implement the quadtree as a class. The method <code>QuadTree.subdivide</code> subdivides given data into blocks until a minimum size of subdivision is reached or the function <code>similarity_func</code>, which validates the spatial homogeneity of the subdivision, returns <code>True</code>. In order to make the criterion of similarity validation flexible, we make the method <code>QuadTree.subdivide</code> accept an argument <code>similarity_func</code>, so that the function could be defined later.</p>
+
+<pre><code class="language-python">class QuadTree:
+    class Node:
+        def __init__(self, x, y, data):
+            x = self._convert_int(x)
+            y = self._convert_int(y)
+
+            self.x = x
+            self.y = y
+            self.data = data
+            self.children = []
+            
+        @property
+        def shape(self):
+            return self.data.shape
+
+        def __repr__(self):
+            return &quot;Node(x={0}, y={1}, shape={2})&quot;.format(self.x, self.y, self.shape)
+        
+        def _convert_int(self, x):
+            if type(x) is not int:
+                x = int(x)
+                
+            return x
+    
+    def __init__(self, data):
+        x = 0
+        y = 0
+        self.root = self.Node(x, y, data)
+        
+    def subdivide(self, similarity_func, args=(), min_size=(1, 1)):
+        if not isinstance(args, tuple):
+            args = (args,)
+        
+        def _subdivide(node):
+            data_reshaped = node.data.reshape((-1, 3))
+            if (data_reshaped.shape[0] &lt;= min_size[0] 
+                or data_reshaped.shape[1] &lt;= min_size[1] 
+                or similarity_func(data_reshaped, *args)):
+                return
+            
+            x_mid = (node.data.shape[0] - 1) // 2 + 1
+            y_mid = (node.data.shape[1] - 1) // 2 + 1
+
+            data_sw = node.data[0:x_mid, 0:y_mid]
+            if data_sw.shape[0] &gt;= min_size[0] and data_sw.shape[1] &gt;= min_size[1]:
+                x_sw = float(node.x)
+                y_sw = node.y
+                node_sw = self.Node(x_sw, y_sw, data_sw)
+                _subdivide(node_sw)
+                node.children.append(node_sw)
+
+            data_se = node.data[x_mid:, 0:y_mid]
+            if data_se.shape[0] &gt;= min_size[0] and data_se.shape[1] &gt;= min_size[1]:
+                x_se = node.x + x_mid
+                y_se = node.y
+                node_se = self.Node(x_se, y_se, data_se)
+                _subdivide(node_se)
+                node.children.append(node_se)
+            
+            data_nw = node.data[0:x_mid, y_mid:]
+            if data_nw.shape[0] &gt;= min_size[0] and data_nw.shape[1] &gt;= min_size[1]:
+                x_nw = node.x
+                y_nw = node.y + y_mid
+                node_nw = self.Node(x_nw, y_nw, data_nw)
+                _subdivide(node_nw)
+                node.children.append(node_nw)
+
+            data_ne = node.data[x_mid:, y_mid:]
+            if data_ne.shape[0] &gt;= min_size[0] and data_ne.shape[1] &gt;= min_size[1]:
+                x_ne = node.x + x_mid
+                y_ne = node.y + y_mid
+                node_ne = self.Node(x_ne, y_ne, data_ne)
+                _subdivide(node_ne)
+                node.children.append(node_ne)
+                
+        _subdivide(self.root)
+        
+    @property
+    def leaves(self):
+        _leaves = []
+        
+        def _get_leaves(node):
+            if len(node.children) == 0:
+                _leaves.append(node)
+                return
+            for c in node.children:
+                _get_leaves(c)
+                
+        _get_leaves(self.root)
+        return _leaves
+        
+</code></pre>
+
+<p>The strategy here is quite simple. We use QuadTree to examine and subdivide the input image. If the color of pixels in a subdivision resembles each other enough, we consider the subdivision as homogeneous and make the subdivision as a leaf of the quadtree.</p>
+
+<p>To find the similarity of the colors, we measure the color distance between two pixels within a color space by using Euclidean distance. A quick implementation would be simply measure the distance between two vectors of RGB, $[r_1, g_1, b_1]$ and $[r_2, g_2, b_2]$:</p>
+
+<p>\[
+\text{distance} = \sqrt{(r_1 - r_2)^2 + (g_1 - g_2)^2 + (b_1 - b_2)^2}
+\]</p>
+
+<p>There is still one concern. The response of the human vision system for each color is not uniform across the spectrum of visible regime. As the figure shown below, the sensitivity of human vision to different colors varies dramatically.</p>
+
+<p><img src="Eyesensitivity.svg" alt="Eyesensitivity.svg" /></p>
+
+<p>(Eye sensitivity diagram. Image source: <a href="https://en.wikipedia.org/wiki/Color_vision#/media/File:Eyesensitivity.svg">https://en.wikipedia.org/wiki/Color_vision#/media/File:Eyesensitivity.svg</a>)</p>
+
+<p>Here, we shall use a common technique used in video industry, converting the color vector from RGB space to a more perceptually uniform color space, YUV space.</p>
+
+<p>\[
+\begin{align}
+\begin{bmatrix}
+Y  \newline
+U \newline
+V
+\end{bmatrix} =
+\begin{bmatrix}
+0.299 &amp; 0.587 &amp; 0.114  \newline
+-0.14713 &amp; -0.28886 &amp; 0.463 \newline
+0.615 &amp; -0.51499 &amp; -0.10001
+\end{bmatrix}
+\begin{bmatrix}
+R  \newline
+G \newline
+B
+\end{bmatrix},
+\end{align}
+\]</p>
+
+<p>The color vector can be converted back to RGB space by</p>
+
+<p>\[
+\begin{align}
+\begin{bmatrix}
+R  \newline
+G \newline
+B
+\end{bmatrix} =
+\begin{bmatrix}
+1 &amp; 0 &amp; 1.13983  \newline
+1 &amp; -0.39465 &amp; -0.58060 \newline
+1 &amp; 2.03211 &amp; 0
+\end{bmatrix}
+\begin{bmatrix}
+Y  \newline
+U \newline
+V
+\end{bmatrix},
+\end{align}
+\]</p>
+
+<p>Now, we are ready to define our metric function of color similarity for a given set of colors in YUV space, $s={[Y_i, U_i, V_i]^T : i \in Z \text{ and } i \in [1, N] }$, as measuring the Euclidean distance, $d$, of the standard deviation of Y, U, and V components of given colors:</p>
+
+<p>\[
+d(s) = \sqrt{\sigma(Y)^2 + \sigma(U)^2 + \sigma(V)^2}
+\]</p>
+
+<p>The colors in a given color set are $d(s) &lt; R$, where $R$ is an user-defined tolerance. One could imagine that the we are validating the similarity by checking if the standard deviations of given colors is inside a circle of radius $R$</p>
+
+<p>Below is the code of the functions for converting color vector back and forth between RGB and YUV color spaces and the metric function $d(s)$:</p>
+
+<pre><code class="language-python">def rgb_to_yuv(v_rgb):
+    v_rgb = v_rgb.reshape((-1, 3))
+    m = [[0.299, 0.587, 0.114],
+         [-0.14713, -0.28886, 0.463],
+         [0.615, -0.51499, -0.10001]]
+    m = np.array(m)
+    v_yuv = np.matmul(m, v_rgb.T).T
+    return v_yuv
+
+def yuv_to_rgb(v_yuv):
+    v_yuv = v_yuv.reshape((-1, 3))
+    m = [[1, 0, 1.13983],
+         [1, -0.39465, -0.58060],
+         [1, 2.03211, 0]]
+    m = np.array(m)
+    v_rgb = np.matmul(m, v_yuv.T).T
+    return v_rgb
+    
+def validate_similar(c, tolerance):
+    c = c.reshape((-1, 3))
+    c_yuv = rgb_to_yuv(c)
+    c_std = np.std(c_yuv, axis=0)
+    is_similar = np.sqrt(np.sum(c_std ** 2.0)) &lt; tolerance
+
+    return is_similar
+
+</code></pre>
+
+<p>Now that we've got the basic functions defined. Let's apply it on the Mandrill image and see how well it does by using the tolerance of $10$.</p>
+
+<pre><code class="language-python">qt = QuadTree(data)
+qt.subdivide(validate_similar, args=(10,))
+
+# plot the raw data
+fig = plt.subplots(figsize=(8, 4))
+ax = plt.subplot2grid((1, 2), (0, 0))
+ax.set_title(&quot;Raw: {0} pixels&quot;.format(data.shape[0] * data.shape[1]))
+ax.imshow(data)
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
+
+
+# plot the processed data
+patches = []
+for leaf in qt.leaves:
+    m_yuv = rgb_to_yuv(leaf.data)
+    yuv_mean = np.mean(m_yuv, axis=0)
+    rgb_mean = yuv_to_rgb(yuv_mean)
+    rgb_mean[rgb_mean &gt; 256] = 256
+    rgb_mean[rgb_mean &lt; 0] = 0
+    r, g, b = rgb_mean.flatten() / 256
+    rect = mpatches.Rectangle((leaf.y, leaf.x), width=leaf.shape[1], height=leaf.shape[0], ec=&quot;none&quot;, color=(r, g, b), lw=0.2)
+    patches.append(rect)
+
+collection = PatchCollection(patches, match_original=True)
+
+ax = plt.subplot2grid((1, 2), (0, 1))
+ax.set_title(&quot;Processed: {0} blocks&quot;.format(len(qt.leaves)))
+ax.add_collection(collection)
+ax.set_aspect('equal')
+ax.set_xlim((0, data.shape[1]))
+ax.set_ylim((data.shape[0], 0))
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
+plt.show()
+</code></pre>
+
+<p><img src="output_12_0.png" alt="png" /></p>
+
+<p>We find the difference between the original image and processed one is hardly noticeable. However, the compressed data use about 30% less blocks!</p>
+
+    </div>
+
+    
+    
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://blog.chunnien.com/tags/algorithm/">algorithm</a>
+          <a href="https://blog.chunnien.com/tags/python/">python</a>
+          <a href="https://blog.chunnien.com/tags/image-processing/">image processing</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/polarization-of-light/">
+            <span class="next-text nav-default">Polarization of Light</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://blog.chunnien.com/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    modified theme based on <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+       -
+    2019
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script async type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({
+       tex2jax: {
+           inlineMath: [['$','$'], ['\\(','\\)']],
+           displayMath: [['$$','$$'], ['\\[','\\]']],
+           processEscapes: true,
+           processEnvironments: true,
+           skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+           TeX: { equationNumbers: { autoNumber: "AMS" },
+                  extensions: ["AMSmath.js", "AMSsymbols.js"] }
+       }
+   });
+  </script>
+
+
+
+</body>
+</html>
